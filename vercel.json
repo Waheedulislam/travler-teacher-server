@@ -1,11 +1,8 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "dist/server.js",
-            "use": "@vercel/node"
-        }
-    ],
+    "buildCommand": "npm run build",
+    "startCommand": "npm start",
+    "ignoreCommand": "echo 'skip dev dependencies install for now'",
     "routes": [
         {
             "src": "/(.*)",
