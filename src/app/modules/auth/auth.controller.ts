@@ -22,7 +22,7 @@ const loginUser = catchAsync(async (req, res) => {
     message: "User logged in successfully!",
     data: {
       accessToken,
-      refreshToken
+      refreshToken,
     },
   });
 });
@@ -41,62 +41,62 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 });
 
 // change password
-const changePassword = catchAsync(async (req: Request, res: Response) => {
-  const user = req.user;
-  const payload = req.body;
+// const changePassword = catchAsync(async (req: Request, res: Response) => {
+//   const user = req.user;
+//   const payload = req.body;
 
-  await AuthService.changePassword(user, payload);
+//   await AuthService.changePassword(user, payload);
 
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: "Password changed successfully!",
-    data: null,
-  });
-});
+//   sendResponse(res, {
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     message: "Password changed successfully!",
+//     data: null,
+//   });
+// });
 
 // forgot password
-const forgotPassword = catchAsync(async (req: Request, res: Response) => {
-  await AuthService.forgotPassword(req.body);
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: "Check your email to reset your password",
-    data: null,
-  });
-});
+// const forgotPassword = catchAsync(async (req: Request, res: Response) => {
+//   await AuthService.forgotPassword(req.body);
+//   sendResponse(res, {
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     message: "Check your email to reset your password",
+//     data: null,
+//   });
+// });
 
 // reset password
 
-const verifyOTP = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthService.verifyOTP(req.body);
+// const verifyOTP = catchAsync(async (req: Request, res: Response) => {
+//   const result = await AuthService.verifyOTP(req.body);
 
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: "OTP verified successfully.",
-    data: result,
-  });
-});
+//   sendResponse(res, {
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     message: "OTP verified successfully.",
+//     data: result,
+//   });
+// });
 
-const resetPassword = catchAsync(async (req: Request, res: Response) => {
-  const payload = req.body;
+// const resetPassword = catchAsync(async (req: Request, res: Response) => {
+//   const payload = req.body;
 
-  const result = await AuthService.resetPassword(payload);
+//   const result = await AuthService.resetPassword(payload);
 
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: "Password reset successfully!",
-    data: result,
-  });
-});
+//   sendResponse(res, {
+//     statusCode: StatusCodes.OK,
+//     success: true,
+//     message: "Password reset successfully!",
+//     data: result,
+//   });
+// });
 
 export const AuthController = {
   loginUser,
   refreshToken,
-  changePassword,
-  forgotPassword,
-  verifyOTP,
-  resetPassword,
+  // changePassword,
+  // forgotPassword,
+  // verifyOTP,
+  // resetPassword,
 };

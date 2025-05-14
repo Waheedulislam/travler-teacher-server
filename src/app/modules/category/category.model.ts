@@ -1,45 +1,17 @@
-import { Schema, model, Document, Types } from "mongoose";
-import { ICategory } from "./category.interface";
+import mongoose, { Schema } from "mongoose";
+import { TCategory } from "./category.interface";
 
-// Extend Mongoose Document with ICategory
-interface ICategoryDocument extends Document, ICategory { }
-
-// Define the schema
-const categorySchema = new Schema<ICategoryDocument>(
+// Create the Category schema based on the interface
+const CategorySchema = new Schema<TCategory>(
   {
-    name: {
+    title: {
       type: String,
       required: [true, "Category name is required"],
       unique: true,
-      trim: true,
     },
-    slug: {
+    image: {
       type: String,
-      required: [true, "Category slug is required"],
-      unique: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    parent: {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-      default: null,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
       required: true,
-    },
-    icon: {
-      type: String,
-      trim: true,
     },
   },
   {
@@ -47,13 +19,5 @@ const categorySchema = new Schema<ICategoryDocument>(
   }
 );
 
-categorySchema.pre<ICategory>("validate", function (next) {
-  if (this instanceof Document) {
-    if (this.isModified("name") && !this.slug) {
-      this.slug = this.name.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
-    }
-  }
-  next();
-});
-
-export const Category = model<ICategoryDocument>("Category", categorySchema);
+const Category = mongoose.model<TCategory>("Category", CategorySchema);
+export default Category;
