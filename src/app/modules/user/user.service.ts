@@ -68,63 +68,7 @@ const getAllUser = async (query: Record<string, unknown>) => {
   };
 };
 
-// const myProfile = async (authUser: IJwtPayload) => {
-//   const isUserExists = await User.findById(authUser.userId);
-//   if (!isUserExists) {
-//     throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
-//   }
-//   if (!isUserExists.isActive) {
-//     throw new AppError(StatusCodes.BAD_REQUEST, "User is not active!");
-//   }
-
-// };
-
-// const updateProfile = async (
-//   payload: Partial<ICustomer>,
-//   file: IImageFile,
-//   authUser: IJwtPayload
-// ) => {
-//   const isUserExists = await User.findById(authUser.userId);
-
-//   if (!isUserExists) {
-//     throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
-//   }
-//   if (!isUserExists.isActive) {
-//     throw new AppError(StatusCodes.BAD_REQUEST, "User is not active!");
-//   }
-
-//   if (file && file.path) {
-//     payload.photo = file.path;
-//   }
-
-//   const result = await Customer.findOneAndUpdate(
-//     { user: authUser.userId },
-//     payload,
-//     {
-//       new: true,
-//     }
-//   ).populate("user");
-
-//   return result;
-// };
-
-// const updateUserStatus = async (userId: string) => {
-//   const user = await User.findById(userId);
-
-//   console.log("comes here");
-//   if (!user) {
-//     throw new AppError(StatusCodes.NOT_FOUND, "User is not found");
-//   }
-
-//   user.isActive = !user.isActive;
-//   const updatedUser = await user.save();
-//   return updatedUser;
-// };
-
 export const UserServices = {
   registerUser,
   getAllUser,
-  //   myProfile,
-  //   updateUserStatus,
-  //   updateProfile,
 };

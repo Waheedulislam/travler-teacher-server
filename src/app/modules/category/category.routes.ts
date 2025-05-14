@@ -7,6 +7,4 @@ router.get("/", CategoryController.getAllCategory);
 
 router.post("/create-category", CategoryController.CreateCategory);
 
-// router.patch("/:id/status", UserController.updateUserStatus);
-
 export const CategoryRoutes = router;
