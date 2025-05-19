@@ -1,8 +1,6 @@
 {
     "version": 2,
     "buildCommand": "npm run build",
-    "startCommand": "npm start",
-    "ignoreCommand": "echo 'skip dev dependencies install for now'",
     "routes": [
         {
             "src": "/(.*)",
