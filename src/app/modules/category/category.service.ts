@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { TCategory } from "./category.interface";
 import Category from "./category.model";
+import AppError from "../../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 // Function to create a category
 const CreateCategory = async (userData: TCategory) => {
@@ -30,7 +32,17 @@ const getAllCategory = async () => {
   return result;
 };
 
+const getSingleCategory = async (productId: string) => {
+  const category = await Category.findById(productId);
+
+  if (!category) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Category not found");
+  }
+  return category;
+};
+
 export const CategoryServices = {
   CreateCategory,
   getAllCategory,
+  getSingleCategory,
 };

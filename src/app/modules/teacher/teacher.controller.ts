@@ -28,7 +28,20 @@ const getAllTeacher = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleTeacher = catchAsync(async (req, res) => {
+  const { teacherId } = req.params;
+  const result = await TeacherServices.getSingleTeacher(teacherId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Single teacher retrieved successfully",
+    data: result,
+  });
+});
+
 export const TeacherController = {
   CreateTeacher,
   getAllTeacher,
+  getSingleTeacher,
 };
