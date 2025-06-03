@@ -68,7 +68,24 @@ const getAllUser = async (query: Record<string, unknown>) => {
   };
 };
 
+// const myProfile = async (authUser: IJwtPayload) => {
+//   const isUserExists = await User.findById(authUser.userId);
+//   if (!isUserExists) {
+//     throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
+//   }
+//   if (!isUserExists.isActive) {
+//     throw new AppError(StatusCodes.BAD_REQUEST, "User is not active!");
+//   }
+
+//   const profile = await User.findOne({ user: isUserExists._id });
+
+//   return {
+//     ...isUserExists.toObject(),
+//     profile: profile || null,
+//   };
+// };
 export const UserServices = {
   registerUser,
   getAllUser,
+  // myProfile,
 };

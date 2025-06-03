@@ -9,7 +9,7 @@ import { Secret } from "jsonwebtoken";
 
 const loginUser = async (payload: IAuth) => {
   const session = await mongoose.startSession();
-
+  console.log(payload);
   try {
     session.startTransaction();
 
@@ -30,10 +30,11 @@ const loginUser = async (payload: IAuth) => {
       userId: user._id as string,
       name: user.name as string,
       email: user.email as string,
+      image: user.image || null,
       isActive: user.isActive,
       role: user.role,
     };
-
+    console.log(jwtPayload);
     const accessToken = createToken(
       jwtPayload,
       config.jwt_access_secret as string,
@@ -71,6 +72,7 @@ const refreshToken = async (token: string) => {
   const { userId } = verifiedToken;
 
   const isUserExist = await User.findById(userId);
+
   if (!isUserExist) {
     throw new AppError(StatusCodes.NOT_FOUND, "User does not exist");
   }
@@ -83,9 +85,11 @@ const refreshToken = async (token: string) => {
     userId: isUserExist._id as string,
     name: isUserExist.name as string,
     email: isUserExist.email as string,
+    image: isUserExist.image || null,
     isActive: isUserExist.isActive,
     role: isUserExist.role,
   };
+  console.log("test:", jwtPayload);
 
   const newAccessToken = createToken(
     jwtPayload,

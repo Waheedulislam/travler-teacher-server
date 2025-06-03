@@ -18,6 +18,11 @@ const userSchema = new Schema<IUser, UserModel>(
       unique: true,
       lowercase: true,
     },
+    image: {
+      type: String,
+      required: false,
+      default: null,
+    },
     password: {
       type: String,
       required: true,

@@ -9,10 +9,12 @@ export enum UserRole {
 
 // User Schema Definition
 export interface IUser extends Document {
+  userId: string;
   email: string;
   password: string;
   name: string;
   role: UserRole;
+  image?: string;
   lastLogin: Date;
   isActive: boolean;
   otpToken?: string | null;
