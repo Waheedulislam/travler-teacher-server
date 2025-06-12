@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "A tour traveler web application server.",
   "main": "server.js",
-  "author": "waheedull Web Development Team",
+  "author": "Next Level Web Development Team",
   "license": "MIT",
   "scripts": {
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "vercel-build": "npm install --legacy-peer-deps && npm run build",
     "create-module": "npx ts-node src/scripts/createModule.ts",
     "deploy": "npm run build && vercel && vercel --prod"
   },
@@ -17,7 +16,7 @@
     "@types/nodemailer": "^6.4.17",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
-    "cloudinary": "^1.41.3",
+    "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
