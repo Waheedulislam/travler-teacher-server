@@ -4,14 +4,13 @@ import { StatusCodes } from "http-status-codes";
 import { TArticle } from "./article.interface";
 import Article from "./article.model";
 
-// Function to create a article
+// Create Article
 const CreateArticle = async (userData: TArticle) => {
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
-    // Create the article document
     const article = new Article(userData);
     const createdArticle = await article.save({ session });
 
@@ -27,11 +26,13 @@ const CreateArticle = async (userData: TArticle) => {
   }
 };
 
+// Get all articles
 const getAllArticle = async () => {
   const result = await Article.find();
   return result;
 };
 
+// Get single article by id
 const getSingleArticle = async (articleId: string) => {
   const article = await Article.findById(articleId);
 
@@ -41,8 +42,73 @@ const getSingleArticle = async (articleId: string) => {
   return article;
 };
 
+// Update article by id
+const updateArticle = async (
+  articleId: string,
+  updateData: Partial<TArticle>
+) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const updatedArticle = await Article.findByIdAndUpdate(
+      articleId,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+        session,
+      }
+    );
+
+    if (!updatedArticle) {
+      throw new AppError(StatusCodes.NOT_FOUND, "Article not found");
+    }
+
+    await session.commitTransaction();
+    return updatedArticle;
+  } catch (error) {
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
+// Delete article by id
+const deleteArticle = async (articleId: string) => {
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const deletedArticle = await Article.findByIdAndDelete(articleId, {
+      session,
+    });
+
+    if (!deletedArticle) {
+      throw new AppError(StatusCodes.NOT_FOUND, "Article not found");
+    }
+
+    await session.commitTransaction();
+    return deletedArticle;
+  } catch (error) {
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
 export const ArticleServices = {
   CreateArticle,
   getAllArticle,
   getSingleArticle,
+  updateArticle,
+  deleteArticle,
 };

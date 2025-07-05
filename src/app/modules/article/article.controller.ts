@@ -10,7 +10,7 @@ const CreateArticle = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "Article Created successfully!",
+    message: "Article created successfully!",
     data: {
       result,
     },
@@ -23,10 +23,11 @@ const getAllArticle = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "Articles are retrieved successfully",
+    message: "Articles retrieved successfully",
     data: { result },
   });
 });
+
 const getSingleArticle = catchAsync(async (req, res) => {
   const { articleId } = req.params;
   const result = await ArticleServices.getSingleArticle(articleId);
@@ -38,8 +39,38 @@ const getSingleArticle = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+const updateArticle = catchAsync(async (req: Request, res: Response) => {
+  const { articleId } = req.params;
+  const updatedData = req.body;
+
+  const result = await ArticleServices.updateArticle(articleId, updatedData);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Article updated successfully",
+    data: result,
+  });
+});
+
+const deleteArticle = catchAsync(async (req: Request, res: Response) => {
+  const { articleId } = req.params;
+
+  await ArticleServices.deleteArticle(articleId);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Article deleted successfully",
+    data: {},
+  });
+});
+
 export const ArticleController = {
   CreateArticle,
   getAllArticle,
   getSingleArticle,
+  updateArticle,
+  deleteArticle,
 };
