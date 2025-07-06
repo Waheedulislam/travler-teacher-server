@@ -11,17 +11,38 @@ import notFound from "./app/middleware/notFound";
 
 const app: Application = express();
 
-// Middleware setup
-app.use(cors({ origin: "http://localhost:3000" }));
+// ✅ Allowed origins
+const allowedOrigins = [
+  "http://localhost:3000", // Development
+  "https://www.traveltoyourteacher.com", // Production
+];
+
+// ✅ CORS middleware setup
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+// ✅ Global middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ✅ Main router
 app.use("/api/v1", router);
 
+// ✅ seed admin if needed
 // seedAdmin();
 
-// Test route
+// ✅ Test route
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   const currentDateTime = new Date().toISOString();
   const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -51,9 +72,8 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
+// ✅ Global error handler & not found
 app.use(globalErrorHandler);
-
-//Not Found
 app.use(notFound);
 
-export default app; // Export the app for use in server.ts
+export default app;
