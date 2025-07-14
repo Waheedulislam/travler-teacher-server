@@ -13,6 +13,10 @@ const CategorySchema = new Schema<TCategory>(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
