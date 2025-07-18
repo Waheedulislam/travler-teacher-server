@@ -37,8 +37,14 @@ async function bootstrap() {
 
     const io = new SocketIOServer(server, {
       cors: {
-        origin: "*",
+        origin: [
+          "https://www.traveltoyourteacher.com",
+          "http://localhost:3000",
+        ],
+        methods: ["GET", "POST"],
+        credentials: true,
       },
+      transports: ["websocket", "polling"],
     });
 
     socketServer(io);
