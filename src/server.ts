@@ -39,6 +39,7 @@ async function bootstrap() {
       cors: {
         origin: [
           "https://www.traveltoyourteacher.com",
+          "https://api.traveltoyourteacher.com",
           "http://localhost:3000",
         ],
         methods: ["GET", "POST"],
