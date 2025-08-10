@@ -6,8 +6,6 @@ import { StatusCodes } from "http-status-codes";
 import router from "./app/routes";
 import globalErrorHandler from "./app/middleware/globalErrorHandler";
 import notFound from "./app/middleware/notFound";
-// import seedAdmin from './app/DB/seed';
-// import { sslService } from './app/modules/sslcommerz/sslcommerz.service';
 
 const app: Application = express();
 
@@ -64,10 +62,6 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
       uptime: `${Math.floor(serverUptime / 60 / 60)} hours ${Math.floor(
         (serverUptime / 60) % 60
       )} minutes`,
-    },
-    developerContact: {
-      email: "waheeduli81@gmail.com",
-      website: "https://waheedulislam.vercel.app",
     },
   });
 });
