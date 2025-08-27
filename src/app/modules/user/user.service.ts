@@ -67,25 +67,33 @@ const getAllUser = async (query: Record<string, unknown>) => {
     meta,
   };
 };
+const updateProfile = async (userId: string, profileData: Partial<IUser>) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
 
-// const myProfile = async (authUser: IJwtPayload) => {
-//   const isUserExists = await User.findById(authUser.userId);
-//   if (!isUserExists) {
-//     throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
-//   }
-//   if (!isUserExists.isActive) {
-//     throw new AppError(StatusCodes.BAD_REQUEST, "User is not active!");
-//   }
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: profileData },
+      { new: true, session }
+    );
 
-//   const profile = await User.findOne({ user: isUserExists._id });
+    if (!updatedUser) {
+      throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
+    }
 
-//   return {
-//     ...isUserExists.toObject(),
-//     profile: profile || null,
-//   };
-// };
+    await session.commitTransaction();
+    return updatedUser;
+  } catch (error) {
+    if (session.inTransaction()) await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
 export const UserServices = {
   registerUser,
   getAllUser,
-  // myProfile,
+  updateProfile,
 };

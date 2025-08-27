@@ -9,15 +9,13 @@ import { UserRole } from "./user.interface";
 const router = Router();
 
 router.get("/users", UserController.getAllUser);
-// router.get(
-//   "/me",
-//   auth(UserRole.ADMIN, UserRole.USER),
-//   UserController.myProfile
-// );
+
 router.post(
   "/create-user",
   clientInfoParser,
   validateRequest(UserValidation.userValidationSchema),
   UserController.registerUser
 );
+router.patch("/:id", UserController.updateProfile);
+
 export const UserRoutes = router;

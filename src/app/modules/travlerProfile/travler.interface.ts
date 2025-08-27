@@ -1,21 +1,8 @@
-import { UserRole } from "../user/user.interface";
-
-export interface IAuth {
-  email: string;
-  password: string;
-}
-
-export interface IJwtPayload {
-  userId: string;
+export interface IUser {
+  _id?: string;
   name: string;
   email: string;
-  image?: string | null;
-  role: UserRole;
-  isActive: boolean;
-  lastLogin?: Date;
-  otpToken?: string | null;
-  createdAt?: Date;
-  updatedAt?: Date;
+  image?: string;
   age?: string;
   homeCountry?: string;
   languages?: string[];
@@ -30,4 +17,6 @@ export interface IJwtPayload {
   foodPreferences?: string[];
   socialStyle?: number[];
   adventurousness?: number[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

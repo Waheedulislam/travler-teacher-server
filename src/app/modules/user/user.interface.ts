@@ -20,6 +20,20 @@ export interface IUser extends Document {
   otpToken?: string | null;
   createdAt: Date;
   updatedAt: Date;
+  age?: string;
+  homeCountry?: string;
+  languages?: string[];
+  travelInterests?: string[];
+  targetLanguages?: string[];
+  languageLevel?: string;
+  learningGoals?: string[];
+  preferredDestinations?: string[];
+  travelStyle?: string;
+  accommodationPreference?: string;
+  hobbies?: string[];
+  foodPreferences?: string[];
+  socialStyle?: number[];
+  adventurousness?: number[];
 }
 
 export interface UserModel extends Model<IUser> {

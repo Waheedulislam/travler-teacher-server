@@ -9,38 +9,50 @@ import { Secret } from "jsonwebtoken";
 
 const loginUser = async (payload: IAuth) => {
   const session = await mongoose.startSession();
-  console.log(payload);
   try {
     session.startTransaction();
 
     const user = await User.findOne({ email: payload.email }).session(session);
-    if (!user) {
+    if (!user)
       throw new AppError(StatusCodes.NOT_FOUND, "This user is not found!");
-    }
-
-    if (!user.isActive) {
+    if (!user.isActive)
       throw new AppError(StatusCodes.FORBIDDEN, "This user is not active!");
-    }
-
-    if (!(await User.isPasswordMatched(payload?.password, user?.password))) {
+    if (!(await User.isPasswordMatched(payload.password, user.password))) {
       throw new AppError(StatusCodes.FORBIDDEN, "Password does not match");
     }
 
     const jwtPayload: IJwtPayload = {
       userId: user._id as string,
-      name: user.name as string,
-      email: user.email as string,
-      image: user.image || null,
-      isActive: user.isActive,
+      name: user.name,
+      email: user.email,
+      image: user.image,
       role: user.role,
+      isActive: user.isActive,
+      lastLogin: user.lastLogin,
+      otpToken: user.otpToken,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      age: user.age,
+      homeCountry: user.homeCountry,
+      languages: user.languages || [],
+      travelInterests: user.travelInterests || [],
+      targetLanguages: user.targetLanguages || [],
+      languageLevel: user.languageLevel,
+      learningGoals: user.learningGoals || [],
+      preferredDestinations: user.preferredDestinations || [],
+      travelStyle: user.travelStyle,
+      accommodationPreference: user.accommodationPreference,
+      hobbies: user.hobbies || [],
+      foodPreferences: user.foodPreferences || [],
+      socialStyle: user.socialStyle || [],
+      adventurousness: user.adventurousness || [],
     };
-    console.log(jwtPayload);
+
     const accessToken = createToken(
       jwtPayload,
       config.jwt_access_secret as string,
       config.jwt_access_expires_in as string
     );
-
     const refreshToken = createToken(
       jwtPayload,
       config.jwt_refresh_secret as string,
@@ -49,10 +61,7 @@ const loginUser = async (payload: IAuth) => {
 
     await session.commitTransaction();
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return { accessToken, refreshToken };
   } catch (error) {
     await session.abortTransaction();
     throw error;
@@ -62,7 +71,7 @@ const loginUser = async (payload: IAuth) => {
 };
 
 const refreshToken = async (token: string) => {
-  let verifiedToken = null;
+  let verifiedToken: any = null;
   try {
     verifiedToken = verifyToken(token, config.jwt_refresh_secret as Secret);
   } catch (err) {
@@ -70,36 +79,44 @@ const refreshToken = async (token: string) => {
   }
 
   const { userId } = verifiedToken;
-
-  const isUserExist = await User.findById(userId);
-
-  if (!isUserExist) {
-    throw new AppError(StatusCodes.NOT_FOUND, "User does not exist");
-  }
-
-  if (!isUserExist.isActive) {
+  const user = await User.findById(userId);
+  if (!user) throw new AppError(StatusCodes.NOT_FOUND, "User does not exist");
+  if (!user.isActive)
     throw new AppError(StatusCodes.BAD_REQUEST, "User is not active");
-  }
 
   const jwtPayload: IJwtPayload = {
-    userId: isUserExist._id as string,
-    name: isUserExist.name as string,
-    email: isUserExist.email as string,
-    image: isUserExist.image || null,
-    isActive: isUserExist.isActive,
-    role: isUserExist.role,
+    userId: user._id as string,
+    name: user.name,
+    email: user.email,
+    image: user.image || null,
+    role: user.role,
+    isActive: user.isActive,
+    lastLogin: user.lastLogin,
+    otpToken: user.otpToken || null,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    age: user.age,
+    homeCountry: user.homeCountry,
+    languages: user.languages || [],
+    travelInterests: user.travelInterests || [],
+    targetLanguages: user.targetLanguages || [],
+    languageLevel: user.languageLevel,
+    learningGoals: user.learningGoals || [],
+    preferredDestinations: user.preferredDestinations || [],
+    travelStyle: user.travelStyle,
+    accommodationPreference: user.accommodationPreference,
+    hobbies: user.hobbies || [],
+    foodPreferences: user.foodPreferences || [],
+    socialStyle: user.socialStyle || [],
+    adventurousness: user.adventurousness || [],
   };
-  console.log("test:", jwtPayload);
 
   const newAccessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as Secret,
     config.jwt_access_expires_in as string
   );
-
-  return {
-    accessToken: newAccessToken,
-  };
+  return { accessToken: newAccessToken };
 };
 
 export const AuthService = {
