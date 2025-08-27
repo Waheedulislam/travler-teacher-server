@@ -20,7 +20,7 @@ const loginUser = async (payload: IAuth) => {
     if (!(await User.isPasswordMatched(payload.password, user.password))) {
       throw new AppError(StatusCodes.FORBIDDEN, "Password does not match");
     }
-
+    // user profile
     const jwtPayload: IJwtPayload = {
       userId: user._id as string,
       name: user.name,
